@@ -16,59 +16,83 @@ class KriteriaController extends BaseController
         $this->subKriteriaModel = new SubKriteriaModel();
     }
 
-    // Show list of all kriteria
+    // Menampilkan daftar kriteria
     public function index()
     {
-        $data['kriteria'] = $this->kriteriaModel->findAll();
+        $kriteria = $this->kriteriaModel->findAll();
+        $totalBobot = array_sum(array_column($kriteria, 'bobot'));
+
+        $data = [
+            'title' => 'Daftar Kriteria',
+            'kriteria' => $kriteria,
+            'total_bobot' => $totalBobot
+        ];
+
         return view('kriteria/index', $data);
     }
 
-    // Show form to create a new kriteria
+
+    // Menampilkan form tambah kriteria
     public function create()
     {
-        return view('kriteria/create');
+        $data = [
+            'title' => 'Tambah Kriteria'
+        ];
+
+        return view('kriteria/create', $data);
     }
 
-    // Store new kriteria to the database
+    // Menyimpan kriteria baru
     public function store()
     {
         $this->kriteriaModel->save([
             'nama_kriteria' => $this->request->getPost('nama_kriteria'),
             'bobot' => $this->request->getPost('bobot'),
-            'jenis' => $this->request->getPost('jenis'),
+            'jenis' => $this->request->getPost('jenis')
         ]);
-        return redirect()->to('/kriteria');
+
+        return redirect()->to('/kriteria')->with('success', 'Kriteria berhasil ditambahkan.');
     }
 
-    // Show form to edit an existing kriteria
+    // Menampilkan form edit kriteria
     public function edit($id)
     {
-        $data['kriteria'] = $this->kriteriaModel->find($id);
+        $data = [
+            'title' => 'Edit Kriteria',
+            'kriteria' => $this->kriteriaModel->find($id)
+        ];
+
         return view('kriteria/edit', $data);
     }
 
-    // Update kriteria in the database
+    // Memperbarui data kriteria
     public function update($id)
     {
         $this->kriteriaModel->update($id, [
             'nama_kriteria' => $this->request->getPost('nama_kriteria'),
             'bobot' => $this->request->getPost('bobot'),
-            'jenis' => $this->request->getPost('jenis'),
+            'jenis' => $this->request->getPost('jenis')
         ]);
-        return redirect()->to('/kriteria');
+
+        return redirect()->to('/kriteria')->with('success', 'Data kriteria berhasil diperbarui.');
     }
 
-    // Delete a kriteria from the database
+    // Menghapus kriteria
     public function delete($id)
     {
         $this->kriteriaModel->delete($id);
-        return redirect()->to('/kriteria');
+        return redirect()->to('/kriteria')->with('success', 'Kriteria berhasil dihapus.');
     }
 
-    // Show list of sub-kriteria for a specific kriteria
-    public function sub_kriteria($id)
+    // Menampilkan sub-kriteria berdasarkan kriteria tertentu
+    public function subKriteria($id)
     {
-        $data['sub_kriteria'] = $this->subKriteriaModel->where('id_kriteria', $id)->findAll();
+        $data = [
+            'title' => 'Sub-Kriteria',
+            'kriteria' => $this->kriteriaModel->find($id),
+            'sub_kriteria' => $this->subKriteriaModel->where('id_kriteria', $id)->findAll()
+        ];
+
         return view('kriteria/sub_kriteria', $data);
     }
 }

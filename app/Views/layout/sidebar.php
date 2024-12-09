@@ -22,9 +22,26 @@
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/kriteria">Daftar Kriteria</a>
-                            <a class="nav-link" href="/subkriteria">Sub-Kriteria</a>
+                            <a class="nav-link" href="/sub_kriteria">Sub-Kriteria</a>
                         </nav>
                     </div>
+
+
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseKriteria"
+                        aria-expanded="false" aria-controls="collapseKriteria">
+                        <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        Penilaian
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseKriteria" aria-labelledby="headingOne"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/penilaian">Tabel Penilaian</a>
+                            <a class="nav-link" href="/penilaian/normalisasi">Hasil Normalisasi</a>
+                            <a class="nav-link" href="/penilaian/hasil-akhir">Hasil Weighting</a>
+                        </nav>
+                    </div>
+
 
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMahasiswa"
                         aria-expanded="false" aria-controls="collapseMahasiswa">
@@ -36,6 +53,12 @@
                         data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/mahasiswa">Data Mahasiswa</a>
+                        </nav>
+                    </div>
+                    <div class="collapse" id="collapseMahasiswa" aria-labelledby="headingTwo"
+                        data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/alternatif">Data Alternatif</a>
                         </nav>
                     </div>
 
@@ -58,9 +81,9 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid d-flex justify-content-center" style="max-width: 1200px; ">
-                
+
                 <?= $this->renderSection('content'); ?>
-                    
+
             </div>
         </main>
     </div>

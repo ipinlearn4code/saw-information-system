@@ -1,44 +1,56 @@
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-
 <div class="container mt-4">
-    <h1 class="mb-4">Form Penilaian Mahasiswa</h1>
-    <form action="/penilaian/submit" method="POST">
-        <!-- Mahasiswa Dropdown -->
-        <div class="mb-3">
-            <label for="mahasiswa_id" class="form-label">Mahasiswa</label>
-            <select name="mahasiswa_id" id="mahasiswa_id" class="form-select" required>
-                <option value="">Pilih Mahasiswa</option>
-                <?php foreach ($mahasiswa as $m): ?>
-                    <option value="<?= $m['id_mahasiswa']; ?>"><?= $m['nama']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+    <h1 class="mb-4">Penilaian Mahasiswa</h1>
 
-        <!-- Kriteria dan Nilai -->
-        <div class="mb-3">
-            <label for="kriteria_id" class="form-label">Kriteria</label>
-            <select name="kriteria_id" id="kriteria_id" class="form-select" required>
-                <option value="">Pilih Kriteria</option>
-                <?php foreach ($kriteria as $k): ?>
-                    <option value="<?= $k['id_kriteria']; ?>"><?= $k['nama_kriteria']; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+    <!-- Tombol Tambah Penilaian -->
+    <a href="/penilaian/create" class="btn btn-primary mb-3">Tambah Penilaian</a>
 
-        <!-- Nilai Input untuk Kriteria -->
-        <div class="mb-3">
-            <label for="nilai" class="form-label">Nilai</label>
-            <input type="number" name="nilai" id="nilai" class="form-control" placeholder="Masukkan Nilai" required min="1" max="100">
-        </div>
-
-        <!-- Submit Button -->
-        <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Kirim Penilaian</button>
-        </div>
-    </form>
+    <!-- Tabel Penilaian -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>No</th>
+                    <th>Alternatif</th>
+                    <?php foreach ($kriteria as $krit): ?>
+                        <th><?= $krit['nama_kriteria']; ?></th>
+                    <?php endforeach; ?>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (count($mahasiswa) > 0): ?>
+                    <?php foreach ($mahasiswa as $index => $mhs): ?>
+                        <tr>
+                            <td><?= $index + 1; ?></td>
+                            <td><?= $mhs['nama']; ?></td>
+                            <?php foreach ($kriteria as $krit): ?>
+                                <?php
+                                    $nilai = 0;
+                                    foreach ($penilaian as $pen) {
+                                        if ($pen['id_mahasiswa'] == $mhs['id_mahasiswa'] && $pen['id_kriteria'] == $krit['id_kriteria']) {
+                                            $nilai = $pen['nilai'];
+                                            break;
+                                        }
+                                    }
+                                ?>
+                                <td><?= $nilai; ?></td>
+                            <?php endforeach; ?>
+                            <td>
+                                <a href="/penilaian/edit/<?= $mhs['id_mahasiswa']; ?>" class="btn btn-warning btn-sm">Ubah</a>
+                                <a href="/penilaian/delete/<?= $mhs['id_mahasiswa']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus penilaian?');">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="<?= count($kriteria) + 3; ?>" class="text-center">Belum ada data penilaian.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
-
-
 <?= $this->endSection(); ?>

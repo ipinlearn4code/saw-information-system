@@ -42,16 +42,47 @@ $routes->group(
         $routes->get('create', 'KriteriaController::create');
         $routes->post('store', 'KriteriaController::store');
         $routes->get('edit/(:num)', 'KriteriaController::edit/$1');
-        $routes->put('(:num)', 'KriteriaController::update/$1');
+        $routes->PUT('update/(:num)', 'KriteriaController::update/$1');
         $routes->get('delete/(:num)', 'KriteriaController::delete/$1');
-        $routes->get('sub_kriteria/(:num)', 'KriteriaController::sub_kriteria/$1');
+        $routes->get('sub_kriteria/(:num)', 'KriteriaController::subKriteria/$1');
+
     }
-);  
+);
 
-$routes->group('penilaian', function($routes) {
-    $routes->get('/', 'PenilaianController::index');
+$routes->group(
+    'sub_kriteria',
+    function ($routes) {
+        $routes->get('/', 'SubKriteriaController::index');
+        $routes->get('create/(:num)', 'SubKriteriaController::create/$1');
+        $routes->post('store', 'SubKriteriaController::store');
+        $routes->get('edit/(:num)', 'SubKriteriaController::edit/$1');
+        $routes->put('update/(:num)', 'SubKriteriaController::update/$1');
+        $routes->get('delete/(:num)', 'SubKriteriaController::delete/$1');
+    }
+);
 
-    $routes->post('submit', 'PenilaianController::submit');
+$routes->group(
+    'penilaian',
+    function ($routes) {
+        $routes->get('/', 'PenilaianController::index');
+        $routes->get('create', 'PenilaianController::create');
+        $routes->post('store', 'PenilaianController::store');
+        $routes->get('edit/(:num)', 'PenilaianController::edit/$1');
+        $routes->post('update/(:num)', 'PenilaianController::update/$1');
+        $routes->get('delete/(:num)', 'PenilaianController::delete/$1');
+        $routes->get('normalisasi', 'PenilaianController::normalisasi');
 
-    $routes->get('hasil/(:num)', 'PenilaianController::hasil');
-});
+        $routes->get('hasil-akhir', 'PerhitunganController::index'); // Menampilkan hasil akhir
+        $routes->post('urutkan', 'PerhitunganController::urutkan'); // Me
+    }
+);
+
+$routes->group(
+    'alternatif',
+    function ($routes) {
+        $routes->get('/', 'AlternatifController::index');
+        $routes->get('detail/(:num)', 'AlternatifController::detail/$1');
+
+    }
+);
+
